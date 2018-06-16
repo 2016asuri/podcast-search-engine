@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2>Here's what you missed.</h2>
+<h3>Top 25 podcasts</h3>
+  <ul>
+    <!--<li><strong>Top 50 Podcasts</strong> <br>{{ response }}</li>-->
+    <table>
+        {% for pod in top25 %}
+            <tr><td>{{pod}}</td></tr>
+    {% endfor %}
+    </table>
+    
+  </ul>
+
+{% endblock %}
