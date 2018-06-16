@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -32,23 +33,21 @@ def newsfeed(request):
     	context = {'top25':response},
     	)
 
-
-def login(request):
+def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            form.save()
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            #return HttpResponse(request)
-            return render(request, 'index.html', {'form': form})
+            return redirect('newsfeed')
+        else: return render(request, 'login.html', {'form': form})
     else:
         form = AuthenticationForm()
-    return render(request, 'index.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
-def signup(request):
+def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -57,10 +56,9 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            #return HttpResponse(request)
-            return render(request, 'index.html', {'form': form})
+            return redirect('newsfeed')
     else:
         form = UserCreationForm()
-    return render(request, 'index.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
     

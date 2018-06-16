@@ -4,8 +4,16 @@
 <h1>Podcaster</h1>
 <p>Welcome to <em>Podcaster</em>, your podcast search engine.</p>
 
+
+      {% if user.is_authenticated %}
+        <!--<a href="{% url 'logout' %}">logout</a>-->
+      {% else %}
+        <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a>
+      {% endif %}
+
+
 <!-- Button to open the modal -->
-<form action='login/'>
+<!-- <form action='login/'>
     <input type="button" value="Login" onclick="document.getElementById('id01').style.display='block'"></button>
 </form>
 
@@ -14,16 +22,17 @@
 
 <form action='signup/'>
     <input type="button" value="Sign Up" onclick="document.getElementById('id02').style.display='block'"></button>
-</form>
+</form> -->
 
 <!-- The Modal (contains the Sign Up form) -->
-<div id="id02" class="modal">
+<!-- <div id="id02" class="modal">
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">times;</span>
   <form class="modal-content" method='POST'>
     <div class="container">
-    {% csrf_token %}
-    {{ form.as_p }}
-
+    <h1>Sign Up</h1>
+      {% csrf_token %}
+      {{ form.as_p }}
+      
       <label>
         <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
       </label>
@@ -44,7 +53,6 @@
     <div class="container">
       <h1>Login</h1>
       <p>Please fill in this form to login.</p>
-      <hr>
       {% csrf_token %}
       {{ form.as_p }}
 
@@ -54,7 +62,7 @@
       </div>
     </div>
   </form>
-</div>
+</div> -->
 
 
 
