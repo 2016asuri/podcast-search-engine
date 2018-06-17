@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^newsfeed$', views.newsfeed, name='newsfeed'),
     url(r'^login/$', views.login_view, name='login'),
     url(r'^signup/$', views.signup_view, name='signup'),
+    url(r'^genres/$', views.genres, name='genres'),
 ]
