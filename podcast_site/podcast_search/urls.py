@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^login/$', views.login_view, name='login'),
     url(r'^signup/$', views.signup_view, name='signup'),
     url(r'^genres/$', views.genres, name='genres'),
+    url(r'^logout/$', views.logout, name='logout'),
+    url(r'^search/$', views.search, name='search'),
 ]

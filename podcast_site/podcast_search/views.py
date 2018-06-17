@@ -55,7 +55,7 @@ def newsfeed(request):
         #s = "http://gpodder.net/mygpoclient/subscriptions/%s.opml".format(request.user.username)
         sublist = httpclient.GET(uri)
         #sublist = client.get_subscriptions(device)
-    except http.NotFound:
+    except http.NotFound: #device does not exist
         sublist = []
     for sub in sublist:
         response2.append(sub.title)
@@ -111,5 +111,19 @@ def genres(request):
     'tag5': tags[5], 'tag6': tags[6], 'tag7': tags[7], 'tag8': tags[8], 'tag9': tags[9], 
     'pods0': pods[0], 'pods1': pods[1], 'pods2': pods[2], 'pods3': pods[3], 'pods4': pods[4],
     'pods5': pods[5], 'pods6': pods[6], 'pods7': pods[7], 'pods8': pods[8], 'pods9': pods[9], })
+
+def logout(request):
+    return index(request)
+
+def search(request):
+    if request.method == 'POST':
+        print request.POST
+        search_term = request.POST['search_term']
+        client = public.PublicClient()
+        pods = []
+        for pod in client.search_podcasts(search_term):
+            pods.append(pod.title)
+        return render(request, 'search.html', {'heading': 'Your results:', 'pods': pods})   
+    return render(request, 'search.html')
 
 
