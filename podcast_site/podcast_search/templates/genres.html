@@ -1,0 +1,79 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2>Look at these top genres!</h2>
+  <ul>
+    
+       <h3> {{tag0}}</h3>
+        <table>
+        {% for pod in pods0 %}
+            <tr>{{pod}}, </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag1}}</h3>
+        {% for pod in pods1 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag2}}</h3>
+        {% for pod in pods2 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag3}}</h3>
+        {% for pod in pods3 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag4}}</h3>
+        {% for pod in pods4 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag5}}</h3>
+        {% for pod in pods5 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+       <h3> {{tag6}}</h3>
+        {% for pod in pods6 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag7}}</h3>
+        {% for pod in pods7 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag8}}</h3>
+        {% for pod in pods8 %}
+            <tr>{{pod}},   </tr>
+        {% endfor %} <br>
+        </table>
+        <br>
+        <table>
+        <h3>{{tag9}}</h3>
+        {% for pod in pods9 %}
+            <tr>{{pod}},  </tr>
+        {% endfor %} <br>
+        </table>
+    
+  </ul>
+
+{% endblock %}

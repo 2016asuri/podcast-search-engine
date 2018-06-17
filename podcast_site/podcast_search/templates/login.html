@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Returning users: Login</h1>
+  {% if form.errors %}
+    <p style="color: red">Please try again.</p>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+ 
+
+  <button type="submit">Login</button>
+  <br>
+  <a href="{% url 'signup' %}">New to Podcaster? Sign up</a>
+  </form>
+
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>New users: Sign up</h1>
+  {% if form.errors %}
+    <p style="color: red">Please try again.</p>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+ 
+
+  <button type="submit">Sign Up</button>
+  </form>
+
+
+{% endblock %}

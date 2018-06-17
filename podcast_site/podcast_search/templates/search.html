@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Search for podcasts</h1>
+<body>
+	<form method="post">
+	{% csrf_token %}
+    Search for: <input type="text" id = "search_term" name = "search_term"><br>
+    <button type="submit">Search</button>
+    {% csrf_token %}
+	</form>
+	<h2> {{heading}} </h2>
+    <table>
+    {% for pod in pods %}
+    	<tr><td>{{pod}}</td></tr>
+    {% endfor %}
+
+</body>
+
+
+{% endblock %}
