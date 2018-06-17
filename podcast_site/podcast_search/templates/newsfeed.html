@@ -8,7 +8,10 @@
     <table>
         {% for pod in top25 %}
             <tr><td>{{pod}}</td></tr>
-    {% endfor %}
+        {% endfor %}
+        {% for pod in sublist %}
+        	<tr><td>{{pod}}</td></tr>
+        {% endfor %}
     </table>
     
   </ul>

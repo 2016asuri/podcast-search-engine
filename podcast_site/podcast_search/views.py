@@ -4,13 +4,14 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from mygpoclient import simple, api, public
+from mygpoclient import simple, api, public, http
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+import requests
 
 
 def index(request):
@@ -27,10 +28,38 @@ def newsfeed(request):
         response.append( '%4d. %s' % (index+1, entry.title) )
 
     #return HttpResponse(response)
+
+    response2 = []
+
+    #r = requests.get("http://gpodder.net/api/2/auth/%s/login.json".format(request.user.username))
+    #client = api.MygPodderClient(request.user.username, request.user.password)
+    client = simple.SimpleClient(request.user.username, request.user.password)
+    #print request.user.password
+    #client.update_device_settings('device_name', caption='My Device')
+    subscriptions = []
+    subscriptions.append('http://example.org/episodes.rss')
+    subscriptions.append('http://example.com/feeds/podcast.xml')
+    
+    #sublist = client.get_subscriptions(None)
+
+    device = api.PodcastDevice('manatee', 'My Device', 'mobile', 20)
+    client.update_device_settings(device, caption='my device')
+    client.put_subscriptions(device, subscriptions)
+    
+
+    try:
+        #httpclient = http.HttpClient(request.user.username, request.user.password)
+        #s = "http://gpodder.net/mygpoclient/subscriptions/%s.opml".format(request.user.username)
+        #sublist = httpclient.GET(s)
+        sublist = client.get_subscriptions(device)
+    except http.NotFound:
+        sublist = []
+    for sub in sublist:
+        response2.append(sub.title)
     return render(
     	request,
     	'newsfeed.html',
-    	context = {'top25':response},
+    	context = {'top25':response, 'sublist': response2},
     	)
 
 def login_view(request):
@@ -61,4 +90,6 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
+    
+#def subscriptions(request):
     
