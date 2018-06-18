@@ -3,13 +3,12 @@
 {% block content %}
 <h1>Podcaster</h1>
 <p>Welcome to <em>Podcaster</em>, your podcast search engine.</p>
-
-
-      {% if user.is_authenticated %}
+<a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a>
+      <!--{% if user.is_authenticated %}-->
         <!--<a href="{% url 'logout' %}">logout</a>-->
-      {% else %}
-        <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a>
-      {% endif %}
+     <!-- {% else %}-->
+        
+      <!--{% endif %}-->
 
 
 <!-- Button to open the modal -->

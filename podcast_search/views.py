@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 import requests
 
 
+client_password = ''
 def index(request):
     return render(request, 'index.html',)
 
@@ -22,28 +23,27 @@ def index(request):
 def newsfeed(request):
     response = []
 
-    client = public.PublicClient()
-    toplist = client.get_toplist()
+    public_client = public.PublicClient()
+    toplist = public_client.get_toplist()
     for index, entry in enumerate(toplist):
         response.append( '%4d. %s' % (index+1, entry.title) )
 
 
     response2 = []
 
+    #client = api.MygPodderClient(request.user.username, client_password)
+    client = api.MygPodderClient('2016asuri', 'Febru@ry98')
+    #subscriptions = []
+    #subscriptions.append('http://example.org/episodes.rss')
+    #subscriptions.append('http://example.com/feeds/podcast.xml')
 
-    client = api.MygPodderClient(request.user.username, request.user.password)
-
-    subscriptions = []
-    subscriptions.append('http://example.org/episodes.rss')
-    subscriptions.append('http://example.com/feeds/podcast.xml')
-
-    device = api.PodcastDevice('device', 'Device', 'desktop', 0)
+    device = api.PodcastDevice('device', 'Device', 'desktop', 0) #will have to add device to login form
     
-
+    #if client_password == '': return render(request, 'index.html')
     try:
         sublist = client.get_subscriptions(device)
     except http.NotFound: #device does not exist
-        sublist = []
+        sublist = ['You are not a registered gPodder user. Please register at gPodder.net.']
     for index, entry in enumerate(sublist):
         response2.append( '%4d. %s' % (index+1, entry) )
     return render(
@@ -58,6 +58,7 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
+            client_password = raw_password
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('newsfeed')
@@ -82,13 +83,13 @@ def signup_view(request):
 
     
 def genres(request):
-    client = public.PublicClient()
-    toptags = client.get_toptags(10)
+    public_client = public.PublicClient()
+    toptags = public_client.get_toptags(10)
     tags = [tag.tag for tag in toptags]
     pods = []
     for tag in tags:
         tag_resp = []
-        for index, pod in enumerate(client.get_podcasts_of_a_tag(tag)):
+        for index, pod in enumerate(public_client.get_podcasts_of_a_tag(tag)):
             tag_resp.append('%4d. %s' % (index+1, pod.title))
         pods.append(tag_resp)
   #  return render(request, 'genres.html', {'tags':toptags, 'pods':response, 'tag_nums':range(10), 'pod_nums':range(50)})
@@ -99,9 +100,9 @@ def genres(request):
     'pods0': pods[0], 'pods1': pods[1], 'pods2': pods[2], 'pods3': pods[3], 'pods4': pods[4],
     'pods5': pods[5], 'pods6': pods[6], 'pods7': pods[7], 'pods8': pods[8], 'pods9': pods[9], })
 
-#def logout(request):
-#    django.contrib.auth.logout(request)
-#    return index(request)
+def logout(request):
+    django.contrib.auth.logout(request)
+    return index(request)
 
 def search(request):
     if request.method == 'POST':

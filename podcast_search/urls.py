@@ -1,11 +1,12 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
+from django.contrib import admin
 import django
 
 from . import views
 
 urlpatterns = [
-
+	url(r'^admin/', include(admin.site.urls)),
     url(r'^/$', views.index, name='index'),
     url(r'^newsfeed/$', views.newsfeed, name='newsfeed'),
     url(r'^login/$', views.login_view, name='login'),
