@@ -34,10 +34,11 @@ def newsfeed(request):
     #client = api.MygPodderClient(request.user.username, client_password)
     client = api.MygPodderClient('2016asuri', 'Febru@ry98')
     #subscriptions = []
-    #subscriptions.append('http://example.org/episodes.rss')
+    #subscriptions.append('http://feeds.feedburner.com/linuxoutlaws')
     #subscriptions.append('http://example.com/feeds/podcast.xml')
 
     device = api.PodcastDevice('device', 'Device', 'desktop', 0) #will have to add device to login form
+    #client.put_subscriptions(device, subscriptions)
     
     #if client_password == '': return render(request, 'index.html')
     try:
@@ -46,6 +47,16 @@ def newsfeed(request):
         sublist = ['You are not a registered gPodder user. Please register at gPodder.net.']
     for index, entry in enumerate(sublist):
         response2.append( '%4d. %s' % (index+1, entry) )
+
+    #locator = simple.SimpleClient('2016asuri', 'Febru@ry98').locator
+    #r = locator.download_episode_actions_uri(podcast='http://feeds.feedburner.com/linuxoutlaws')
+    #print requests.get(r)
+    #r = requests.get('http://gpodder.net/api/2/episodes/2016asuri.json http://feeds.feedburner.com/linuxoutlaws')
+    #print r.text
+    #print public_client.get_episode_data('http://feeds.feedburner.com/linuxoutlaws')
+    #r = client.download_episode_actions(None)
+    #print r.actions
+    #print(public_client.get_podcast_data('http://feeds.feedburner.com/linuxoutlaws'))   
     return render(
     	request,
     	'newsfeed.html',
