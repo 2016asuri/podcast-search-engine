@@ -31,7 +31,8 @@ def newsfeed(request):
 
     response2 = []
 
-    #r = requests.get("http://gpodder.net/api/2/auth/%s/login.json".format(request.user.username))
+    r = requests.get("http://gpodder.net/api/2/auth/%s/login.json".format(request.user.username))
+    print r
     #client = api.MygPodderClient(request.user.username, request.user.password)
     client = simple.SimpleClient(request.user.username, request.user.password)
     #print request.user.password

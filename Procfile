@@ -1,1 +1,1 @@
-web: gunicorn podcast-search-engine.wsgi --log-file -
+web: gunicorn podcast_site.wsgi podcast-search: app --log-file -

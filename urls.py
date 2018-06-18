@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.conf.urls import include, url
 
 urlpatterns = [
-    url('podcast_search/', include('podcast_search.urls')),
-    url('admin/', admin.site.urls),
+    url(r'^$', include('podcast_search.urls')),
+    url(r'^admin/$', include(admin.site.urls)),
 ]

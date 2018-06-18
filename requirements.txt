@@ -1,6 +1,7 @@
 certifi==2017.11.5
 chardet==3.0.4
 Django==1.11.2
+gunicorn==19.8.1
 idna==2.6
 mygpoclient==1.8
 numpy==1.13.3
