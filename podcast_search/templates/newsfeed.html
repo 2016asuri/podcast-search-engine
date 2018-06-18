@@ -6,13 +6,16 @@
   <ul>
     <table>
         {% for pod in top25 %}
-            <tr><td>{{pod}}</td></tr>
-        {% endfor %}
-        {% for pod in sublist %}
-        	<tr><td>{{pod}}</td></tr>
+            <tr>{{pod}}</tr>
         {% endfor %}
     </table>
-    
   </ul>
-
+<h3>Your subscriptions</h3>
+  <ul>
+    <table>
+        {% for pod in sublist %}
+            <tr>{{pod}}</tr>
+        {% endfor %}
+    </table>
+  </ul>
 {% endblock %}
