@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from mygpoclient import simple, api, public, http, locator
+from mygpoclient import simple, api, public, http, locator, feeds
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -22,24 +22,27 @@ def index(request):
 
 def newsfeed(request):
     response = []
+    client = api.MygPodderClient('2016asuri', 'Febru@ry98')
+    device = api.PodcastDevice('device', 'Device', 'desktop', 0) #will have to add device to login form
+    subscriptions = []
 
     public_client = public.PublicClient()
     toplist = public_client.get_toplist()
     for index, entry in enumerate(toplist):
         response.append( (entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]) )
+        subscriptions.append(entry.url)
 
 
 
     response2 = []
 
     #client = api.MygPodderClient(request.user.username, client_password)
-    client = api.MygPodderClient('2016asuri', 'Febru@ry98')
-    #subscriptions = []
+    
+    #
     #subscriptions.append('http://feeds.feedburner.com/linuxoutlaws')
     #subscriptions.append('http://example.com/feeds/podcast.xml')
 
-    device = api.PodcastDevice('device', 'Device', 'desktop', 0) #will have to add device to login form
-    #client.put_subscriptions(device, subscriptions)
+    client.put_subscriptions(device, subscriptions)
     
     #if client_password == '': return render(request, 'index.html')
     try:
@@ -57,8 +60,15 @@ def newsfeed(request):
     #print r.text
     #print public_client.get_episode_data('http://feeds.feedburner.com/linuxoutlaws')
     #r = client.download_episode_actions(None)
+    
     #print r.actions
-    #print(public_client.get_podcast_data('http://feeds.feedburner.com/linuxoutlaws'))   
+    uri = 'http://feeds.feedburner.com/linuxoutlaws'
+    #p = public_client.get_podcast_data(uri)
+    #print p.mygpo_link
+    #print(public_client.get_episode_data(uri, )) 
+
+    feed = get_feed(uri) 
+    print feed
     return render(
     	request,
     	'newsfeed.html',
@@ -106,6 +116,7 @@ def genres(request):
             tag_resp.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
         pods.append(tag_resp)
   #  return render(request, 'genres.html', {'tags':toptags, 'pods':response, 'tag_nums':range(10), 'pod_nums':range(50)})
+    tags = [tag.capitalize() for tag in tags]
     return render(request, 
     'genres.html',
     {'tag0': tags[0], 'tag1': tags[1], 'tag2': tags[2], 'tag3': tags[3], 'tag4': tags[4],
@@ -123,7 +134,7 @@ def search(request):
         search_term = request.POST['search_term']
         client = public.PublicClient()
         pods = []
-        for pod in client.search_podcasts(search_term):
+        for entry in client.search_podcasts(search_term):
             pods.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
         return render(request, 'search.html', {'heading': 'Your results:', 'pods': pods})   
     return render(request, 'search.html')
