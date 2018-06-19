@@ -11,18 +11,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-import requests
+import requests, django
 
 
-client_password = ''
+client = None
 def index(request):
+    django.contrib.auth.logout(request)
     return render(request, 'index.html',)
 
 # Create your views here.
 
 def newsfeed(request):
     response = []
-    client = api.MygPodderClient('2016asuri', 'Febru@ry98')
+    #client = api.MygPodderClient('2016asuri', 'Febru@ry98')
     device = api.PodcastDevice('device', 'Device', 'desktop', 0) #will have to add device to login form
     subscriptions = []
 
@@ -62,13 +63,13 @@ def newsfeed(request):
     #r = client.download_episode_actions(None)
     
     #print r.actions
-    uri = 'http://feeds.feedburner.com/linuxoutlaws'
+    #uri = 'http://feeds.feedburner.com/linuxoutlaws'
     #p = public_client.get_podcast_data(uri)
     #print p.mygpo_link
     #print(public_client.get_episode_data(uri, )) 
 
-    feed = get_feed(uri) 
-    print feed
+    #feed = get_feed(uri) 
+    #print feed
     return render(
     	request,
     	'newsfeed.html',
@@ -81,7 +82,10 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
-            client_password = raw_password
+            #client_password = raw_password
+            global client
+            client = api.MygPodderClient(username, raw_password)
+            print(client)
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('newsfeed')
@@ -112,8 +116,11 @@ def genres(request):
     pods = []
     for tag in tags:
         tag_resp = []
-        for index, entry in enumerate(public_client.get_podcasts_of_a_tag(tag)):
+        tag_pods = public_client.get_podcasts_of_a_tag(tag)
+        tag_pods = list(set(tag_pods))
+        for index, entry in enumerate(tag_pods):
             tag_resp.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
+        #tag_resp = list(set(tag_resp))
         pods.append(tag_resp)
   #  return render(request, 'genres.html', {'tags':toptags, 'pods':response, 'tag_nums':range(10), 'pod_nums':range(50)})
     tags = [tag.capitalize() for tag in tags]
@@ -125,7 +132,6 @@ def genres(request):
     'pods5': pods[5], 'pods6': pods[6], 'pods7': pods[7], 'pods8': pods[8], 'pods9': pods[9], })
 
 def logout(request):
-    django.contrib.auth.logout(request)
     return index(request)
 
 def search(request):
@@ -136,6 +142,7 @@ def search(request):
         pods = []
         for entry in client.search_podcasts(search_term):
             pods.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
+        pods = list(set(pods))
         return render(request, 'search.html', {'heading': 'Your results:', 'pods': pods})   
     return render(request, 'search.html')
 
