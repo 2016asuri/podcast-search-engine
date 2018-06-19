@@ -65,5 +65,8 @@ button:hover {
   clear: both;
   display: table;
 }
+tr, td{
+  padding: 15px;
+}
 
 }

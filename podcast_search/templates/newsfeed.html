@@ -5,16 +5,28 @@
 <h3>Top 25 podcasts</h3>
   <ul>
     <table>
-        {% for pod in top25 %}
-            <tr>{{pod}}</tr>
+        {% for logo, url, podlist in top25 %}
+            <tr>
+                <td> <img src={{logo}} width=50 height=50></td>
+                {% for resp in podlist %}
+                    <td>{{resp}}</td>
+                {% endfor %}
+                <td><a href={{url}}></a></td>
+            </tr>
         {% endfor %}
     </table>
   </ul>
 <h3>Your subscriptions</h3>
   <ul>
     <table>
-        {% for pod in sublist %}
-            <tr>{{pod}}</tr>
+        {% for logo, url, podlist in sublist %}
+            <tr>
+                <td> <img src={{logo}} width=50 height=50></td>
+                {% for resp in podlist %}
+                    <td>{{resp}}</td>
+                {% endfor %}
+                <td><a href={{url}}></a></td>
+            </tr>
         {% endfor %}
     </table>
   </ul>

@@ -11,9 +11,15 @@
 	</form>
 	<h2> {{heading}} </h2>
     <table>
-    {% for pod in pods %}
-    	<tr><td>{{pod}}</td></tr>
-    {% endfor %}
+    {% for logo, url, podlist in pods %}
+            <tr>
+                <td> <img src={{logo}} width=50 height=50></td>
+                {% for resp in podlist %}
+                    <td>{{resp}}</td>
+                {% endfor %}
+                <td><a href={{url}}></a></td>
+            </tr>
+        {% endfor %}
 
 </body>
 

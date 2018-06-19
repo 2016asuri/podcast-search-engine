@@ -26,7 +26,8 @@ def newsfeed(request):
     public_client = public.PublicClient()
     toplist = public_client.get_toplist()
     for index, entry in enumerate(toplist):
-        response.append( '%4d. %s' % (index+1, entry.title) )
+        response.append( (entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]) )
+
 
 
     response2 = []
@@ -45,8 +46,9 @@ def newsfeed(request):
         sublist = client.get_subscriptions(device)
     except http.NotFound: #device does not exist
         sublist = ['You are not a registered gPodder user. Please register at gPodder.net.']
-    for index, entry in enumerate(sublist):
-        response2.append( '%4d. %s' % (index+1, entry) )
+    for index, uri in enumerate(sublist):
+        entry = public_client.get_podcast_data(uri)
+        response2.append( (entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
 
     #locator = simple.SimpleClient('2016asuri', 'Febru@ry98').locator
     #r = locator.download_episode_actions_uri(podcast='http://feeds.feedburner.com/linuxoutlaws')
@@ -100,8 +102,8 @@ def genres(request):
     pods = []
     for tag in tags:
         tag_resp = []
-        for index, pod in enumerate(public_client.get_podcasts_of_a_tag(tag)):
-            tag_resp.append('%4d. %s' % (index+1, pod.title))
+        for index, entry in enumerate(public_client.get_podcasts_of_a_tag(tag)):
+            tag_resp.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
         pods.append(tag_resp)
   #  return render(request, 'genres.html', {'tags':toptags, 'pods':response, 'tag_nums':range(10), 'pod_nums':range(50)})
     return render(request, 
@@ -122,7 +124,7 @@ def search(request):
         client = public.PublicClient()
         pods = []
         for pod in client.search_podcasts(search_term):
-            pods.append(pod.title)
+            pods.append((entry.logo_url, entry.url, ['%s' % (entry.title), entry.description]))
         return render(request, 'search.html', {'heading': 'Your results:', 'pods': pods})   
     return render(request, 'search.html')
 
