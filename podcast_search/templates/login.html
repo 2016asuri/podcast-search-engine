@@ -10,11 +10,13 @@
     {{ form.as_p }}
     {{ form.errors }}
     {{ form.non_field_errors }}
+    {{ form2.as_p }}
+    {{ form2.errors }}
+    {{ form2.non_field_errors }}
  
 
   <button type="submit">Login</button>
   <br>
-  <a href="{% url 'signup' %}">New to Podcaster? Sign up</a>
   </form>
 
 

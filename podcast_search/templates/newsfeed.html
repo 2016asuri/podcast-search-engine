@@ -2,22 +2,11 @@
 
 {% block content %}
 <h2>Welcome! Here's what you missed.</h2>
-<!-- <h3>Top 25 podcasts</h3>
-  <ul>
-    <table>
-        {% for logo, url, podlist in top25 %}
-            <tr>
-                <td> <img src={{logo}} width=50 height=50></td>
-                {% for resp in podlist %}
-                    <td>{{resp}}</td>
-                {% endfor %}
-                <td><a href={{url}}></a></td>
-            </tr>
-        {% endfor %}
-    </table>
-  </ul> -->
 <h3>Your subscriptions</h3>
   <ul>
+    {% for error in errors %}
+        ERROR: {{error}} <br>
+    {% endfor %}
     <table>
         {% for logo, url, podlist in sublist %}
             <tr>
